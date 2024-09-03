@@ -1,0 +1,20 @@
+---
+- name: Install Google Chrome
+  dnf:
+    name: google-chrome-stable
+    state: present
+  when: install_chrome
+
+- name: Install Flatpaks
+  community.general.flatpak:
+    name:
+      - com.discordapp.Discord
+      - com.getpostman.Postman
+      - com.jgraph.drawio.desktop
+      - com.mattermost.Desktop
+      - com.valvesoftware.Steam
+      - com.visualstudio.code
+      - org.fedoraproject.MediaWriter
+      - org.kde.kpat
+      - org.keepassxc.KeePassXC
+      - us.zoom.Zoom

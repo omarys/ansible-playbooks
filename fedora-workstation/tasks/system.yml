@@ -1,0 +1,13 @@
+---
+- block:
+    - name: Allow connections to Syncthing in the firewall
+      firewalld:
+        zone: FedoraWorkstation
+        service: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      with_items:
+        - syncthing
+
+  when: enable_syncthing

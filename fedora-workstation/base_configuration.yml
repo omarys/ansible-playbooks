@@ -1,0 +1,20 @@
+---
+- name: Base Configuration
+  hosts: workstation
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - include_tasks: tasks/repos.yml
+    - include_tasks: tasks/rust.yml
+    - include_tasks: tasks/packages.yml
+    - include_tasks: tasks/users.yml
+    - include_tasks: tasks/services.yml
+    - include_tasks: tasks/system.yml
+    - include_tasks: tasks/thirdparty.yml
+
+  handlers:
+    - import_tasks: handlers/main.yml

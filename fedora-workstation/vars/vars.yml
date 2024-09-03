@@ -1,0 +1,23 @@
+---
+# User
+local_user: omary
+local_user_personal_email: omaryscott@gmail.com
+local_user_work_email: scott.omary.1.ctr@us.af.mil
+local_user_passwordless_sudo: true
+
+# Extras
+install_neovim: true
+install_emacs: true
+install_docker: true
+install_kubernetes: true
+install_opentofu: true
+install_mullvad: true
+
+# Third party
+install_chrome: true
+install_vscode: true
+install_zoom: true
+install_rpmfusion: true
+
+#python3
+ansible_python_interpreter: /usr/bin/python3

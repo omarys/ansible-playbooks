@@ -1,0 +1,65 @@
+---
+- block:
+  - name: Check for Google Chrome repo
+    stat: path=/etc/yum.repos.d/google-chrome.repo
+    register: chrome_installed
+
+  - name: Install Google Chrome repo
+    dnf:
+      name: "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm"
+      state: present
+    when: not chrome_installed.stat.exists
+
+  - name: Enable Google Chrome repo
+    command: dnf config-manager --set-enabled google-chrome
+    args:
+      warn: false
+
+  when: install_chrome
+
+- block:
+  - name: Check for RPM Fusion Free repo
+    stat: path=/etc/yum.repos.d/rpmfusion-free.repo
+    register: fedora_rpm_fusion_free_installed
+
+  - name: Check for RPM Fusion Nonfree repo
+    stat: path=/etc/yum.repos.d/rpmfusion-nonfree.repo
+    register: fedora_rpm_fusion_nonfree_installed
+
+  - name: Install RPM Fusion repo rpms
+    dnf:
+      name: "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-40.noarch.rpm"
+      state: present
+    when: not fedora_rpm_fusion_free_installed.stat.exists
+
+  - name: Install RPM Fusion Nonfree repo rpms
+    dnf:
+      name: "http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-40.noarch.rpm"
+      state: present
+    when: not fedora_rpm_fusion_nonfree_installed.stat.exists
+
+  when: install_rpmfusion
+
+- block:
+  - name: Check for Docker repo
+    stat: path=/etc/yum.repos.d/docker-ce.repo
+    register: docker_installed
+
+  - name: Install Docker repo
+    RUN dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repodnf
+    when: not docker_installed.stat.exists
+
+  when: install_docker
+
+- block:
+  - name: Check for Mullvad repo
+    stat: path=/etc/yum.repos.d/mullvad.repo
+    register: mullvad_installed
+
+  - name: Install Mullvad repo
+    dnf:
+      name: "https://repository.mullvad.net/rpm/stable/mullvad.repo"
+      state: present
+    when: not mullvad_installed.stat.exists
+
+  when: install_mullvad

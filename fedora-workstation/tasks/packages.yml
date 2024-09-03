@@ -1,0 +1,153 @@
+---
+- name: Upgrade all packages
+  dnf:
+    name: "*"
+    state: latest
+
+- name: Install group packages
+  dnf:
+    name:
+      - "@core"
+      - "@development tools"
+      - "@multimedia"
+      - "@sound-and-video"
+      - "@virtualization"
+    state: installed
+
+- name: Install base packages
+  dnf:
+    name:
+      - ImageMagick
+      - ImageMagick-devel
+      - alacritty
+      - aspell
+      - aspell-en
+      - autoconf
+      - automake
+      - brightnessctl
+      - clang-tools-extra
+      - cmake
+      - composer
+      - curl
+      - direnv
+      - dnf5
+      - editorconfig
+      - feh
+      - ffmpeg
+      - ffmpeg-libs
+      - flatpak
+      - fontconfig-devel
+      - freetype-devel
+      - gcc
+      - gcc-c++
+      - gettext
+      - git
+      - glslang
+      - glslang-devel
+      - gnuplot
+      - gnutls
+      - gnutls-devel
+      - graphviz
+      - harfbuzz-devel
+      - jansson
+      - jansson-devel
+      - java-latest-openjdk
+      - java-latest-openjdk-devel
+      - kernel-devel
+      - ktorrent
+      - libacl-devel
+      - libcgif-devel
+      - libgccjit-devel
+      - libtool
+      - libtree-sitter-devel
+      - libva
+      - libva-utils
+      - libxcb
+      - libxcb-devel
+      - make
+      - maven
+      - mozilla-openh264
+      - mpv
+      - mullvad-vpn
+      - ncurses-devel
+      - ninja-build
+      - openh264
+      - opensc
+      - openssl
+      - openssl-devel
+      - pamixer
+      - pcsc-lite
+      - pcsc-lite-devel
+      - pcsc-perl
+      - pcsc-tools
+      - php
+      - pkgconf-pkg-config
+      - powertop
+      - python3
+      - sbcl
+      - sbcl
+      - shellcheck
+      - shfmt
+      - sqlite3
+      - stow
+      - syncthing
+      - texinfo
+      - texlive-capt-of
+      - texlive-pdfextra
+      - texlive-scheme-basic
+      - texlive-ulem
+      - texlive-wrapfig
+      - tidy
+      - tlp
+      - tlp-rdw
+      - tmux
+      - toolbox
+      - unzip
+      - wl-clipboard
+      - xcb-util
+      - xclip
+      - xdotool
+      - zsh
+    state: installed
+
+- name: Install Rust packages
+  shell: |
+    [ -f ~/.cargo/env ] && source $HOME/.cargo/env
+    cargo install bottom lsd rm-improved fd-find bat zoxide cargo-update \
+      tree-sitter-cli editorconfig starship myfly alacritty delta
+    cargo install ripgrep --features pcre2
+    cargo install --locked yazi-fm yazi-cli
+
+- name: Create ~/Dev if it does not exist
+  ansible.builtin.file:
+    path: ~/Dev
+    state: directory
+    mode: "0755"
+
+- name: Create ~/Work if it does not exist
+  ansible.builtin.file:
+    path: ~/Work
+    state: directory
+    mode: "0755"
+
+- name: Install Tmux Package Manager
+  shell: |
+    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+
+- name: Install Neovim from source
+  shell: |
+    git clone https://github.com/neovim/neovim ~/Dev/neovim
+    cd ~/Dev/neovim
+    make CMAKE_BUILD_TYPE=Release
+    sudo make install
+  when: install_neovim
+
+- name: Install Emacs from source
+  shell: |
+    git clone https://git.savannah.gnu.org/git/emacs.git ~/Dev/emacs
+    cd ~/Dev/emacs
+    git checkout emacs-30
+    ./autogen.sh
+    ./configure --with-cairo --with-modules --without-compress-install --with-gnutls --with-mailutils --with-native-compilation --with-json --with-harfbuzz --with-imagemagick --with-jpeg --with-png --with-rsvg --with-tiff --with-wide-int --with-xft --with-xml2 --with-xpm CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer" prefix=/usr/local
+    make -j$(nproc) && sudo make install
+  when: install_emacs
