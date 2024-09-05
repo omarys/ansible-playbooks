@@ -11,4 +11,5 @@
     - include_tasks: tasks/repos.yml
     - include_tasks: tasks/rust.yml
     - include_tasks: tasks/packages.yml
+    - include_tasks: tasks/stow.yml
     - include_tasks: tasks/users.yml

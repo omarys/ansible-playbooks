@@ -7,94 +7,79 @@
 - name: Install base packages
   apt:
     name:
-      - ImageMagick
-      - ImageMagick-devel
-      - alacritty
       - aspell
       - aspell-en
       - autoconf
-      - automake
-      - brightnessctl
-      - clang-tools-extra
+      - build-essential
+      - clang-format
       - cmake
-      - composer
       - curl
       - direnv
       - editorconfig
       - feh
-      - ffmpeg
-      - ffmpeg-libs
       - flatpak
-      - fontconfig-devel
-      - freetype-devel
-      - gcc
-      - gcc-c++
       - gettext
       - git
-      - glslang
-      - glslang-devel
+      - glslang-dev
+      - glslang-tools
       - gnuplot
-      - gnutls
-      - gnutls-devel
+      - gnutls-bin
+      - gnutls-dev
       - graphviz
-      - harfbuzz-devel
-      - jansson
-      - jansson-devel
-      - java-latest-openjdk
-      - java-latest-openjdk-devel
-      - kernel-devel
-      - ktorrent
-      - libacl-devel
-      - libcgif-devel
-      - libgccjit-devel
+      - install
+      - libacl1-dev
+      - libdbus-1-dev
+      - libfontconfig1-dev
+      - libfreetype6-dev
+      - libgccjit-11-dev
+      - libgif-dev
+      - libharfbuzz-dev
+      - libjansson-dev
+      - libjansson4
+      - libmagickwand-dev
+      - libncurses-dev
+      - libnss3-tools
+      - libpcsc-perl
+      - libpcsclite-dev
+      - libpcsclite1
+      - libssl-dev
+      - libtinfo-dev
       - libtool
-      - libtree-sitter-devel
-      - libva
-      - libva-utils
-      - libxcb
-      - libxcb-devel
-      - make
-      - maven
-      - mozilla-openh264
+      - libtool-bin
+      - libtree-sitter-dev
+      - libx11-dev
+      - libxaw7-dev
+      - libxcb-xfixes0-dev
+      - libxcb-xinerama0-dev
+      - libxinerama-dev
+      - libxkbcommon-dev
       - mpv
-      - mullvad-vpn
       - nala
-      - ncurses-devel
       - ninja-build
-      - openh264
+      - nodejs
+      - npm
+      - openjdk-19-jdk
       - opensc
-      - openssl
-      - openssl-devel
-      - pamixer
-      - pcsc-lite
-      - pcsc-lite-devel
-      - pcsc-perl
       - pcsc-tools
-      - php
-      - pkgconf-pkg-config
-      - powertop
+      - pkg-config
+      - procps
       - python3
-      - sbcl
+      - python3-pip
       - sbcl
       - shellcheck
       - shfmt
       - sqlite3
+      - steam-devices
       - stow
-      - syncthing
       - texinfo
-      - texlive-capt-of
-      - texlive-pdfextra
-      - texlive-scheme-basic
-      - texlive-ulem
-      - texlive-wrapfig
+      - texlive-fonts-extra
+      - texlive-fonts-recommended
+      - texlive-latex-base
+      - texlive-latex-extra
       - tidy
-      - tlp
-      - tlp-rdw
       - tmux
-      - toolbox
       - unzip
       - wl-clipboard
-      - xcb-util
       - xclip
       - xdotool
       - zsh
@@ -120,9 +105,11 @@
     state: directory
     mode: "0755"
 
+- name: Install OMZ
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 - name: Install Tmux Package Manager
-  shell: |
-    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+  shell: git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 
 - name: Install Neovim from source
   shell: |

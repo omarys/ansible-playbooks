@@ -1,0 +1,7 @@
+---
+- name: Run stow
+  shell: |
+    stow . --adopt --target ~/ --verbose=2
+    git reset --hard
+  register: result
+  changed_when: 'result.stderr is search("LINK: ")'
