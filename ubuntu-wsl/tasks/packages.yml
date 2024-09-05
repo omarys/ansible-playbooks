@@ -1,0 +1,133 @@
+---
+- name: Upgrade all packages
+  apt:
+    name: "*"
+    state: latest
+
+- name: Install base packages
+  apt:
+    name:
+      - ImageMagick
+      - ImageMagick-devel
+      - alacritty
+      - aspell
+      - aspell-en
+      - autoconf
+      - automake
+      - brightnessctl
+      - clang-tools-extra
+      - cmake
+      - composer
+      - curl
+      - direnv
+      - editorconfig
+      - feh
+      - ffmpeg
+      - ffmpeg-libs
+      - flatpak
+      - fontconfig-devel
+      - freetype-devel
+      - gcc
+      - gcc-c++
+      - gettext
+      - git
+      - glslang
+      - glslang-devel
+      - gnuplot
+      - gnutls
+      - gnutls-devel
+      - graphviz
+      - harfbuzz-devel
+      - jansson
+      - jansson-devel
+      - java-latest-openjdk
+      - java-latest-openjdk-devel
+      - kernel-devel
+      - ktorrent
+      - libacl-devel
+      - libcgif-devel
+      - libgccjit-devel
+      - libtool
+      - libtree-sitter-devel
+      - libva
+      - libva-utils
+      - libxcb
+      - libxcb-devel
+      - make
+      - maven
+      - mozilla-openh264
+      - mpv
+      - mullvad-vpn
+      - nala
+      - ncurses-devel
+      - ninja-build
+      - openh264
+      - opensc
+      - openssl
+      - openssl-devel
+      - pamixer
+      - pcsc-lite
+      - pcsc-lite-devel
+      - pcsc-perl
+      - pcsc-tools
+      - php
+      - pkgconf-pkg-config
+      - powertop
+      - python3
+      - sbcl
+      - sbcl
+      - shellcheck
+      - shfmt
+      - sqlite3
+      - stow
+      - syncthing
+      - texinfo
+      - texlive-capt-of
+      - texlive-pdfextra
+      - texlive-scheme-basic
+      - texlive-ulem
+      - texlive-wrapfig
+      - tidy
+      - tlp
+      - tlp-rdw
+      - tmux
+      - toolbox
+      - unzip
+      - wl-clipboard
+      - xcb-util
+      - xclip
+      - xdotool
+      - zsh
+    state: installed
+
+- name: Install Rust packages
+  shell: |
+    [ -f ~/.cargo/env ] && source $HOME/.cargo/env
+    cargo install bottom lsd rm-improved fd-find bat zoxide cargo-update \
+      tree-sitter-cli editorconfig starship myfly alacritty delta
+    cargo install ripgrep --features pcre2
+    cargo install --locked yazi-fm yazi-cli
+
+- name: Create ~/Dev if it does not exist
+  ansible.builtin.file:
+    path: ~/Dev
+    state: directory
+    mode: "0755"
+
+- name: Create ~/Work if it does not exist
+  ansible.builtin.file:
+    path: ~/Work
+    state: directory
+    mode: "0755"
+
+- name: Install Tmux Package Manager
+  shell: |
+    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+
+- name: Install Neovim from source
+  shell: |
+    git clone https://github.com/neovim/neovim ~/Dev/neovim
+    cd ~/Dev/neovim
+    make CMAKE_BUILD_TYPE=Release
+    sudo make install
+  when: install_neovim
