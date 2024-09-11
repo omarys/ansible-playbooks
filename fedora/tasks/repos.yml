@@ -63,3 +63,20 @@
     when: not mullvad_installed.stat.exists
 
   when: install_mullvad
+
+- block:
+  - name: Check for Homebrew
+    stat: path=/home/{{ local_user }}/.linuxbrew/bin/brew
+    regsiter: homebrew_installed
+
+  - name: Install Homebrew
+    ansible.builtin.git:
+      repo: git@github.com:Homebrew/brew.git
+      dest: /home/{{ local_user }}/.linuxbrew
+    shell: |
+      eval "$(.linuxbrew/bin/brew shellenv)"
+      brew update --force --quiet
+      echo 'eval "$(/home/{{ local_user }}/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
+    when: not homebrew_installed.stat.exists
+
+  when: install_homebrew

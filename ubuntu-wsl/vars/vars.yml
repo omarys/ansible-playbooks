@@ -6,10 +6,12 @@ local_user_work_email: scott.omary.1.ctr@us.af.mil
 local_user_passwordless_sudo: true
 
 # Extras
-install_neovim: true
 install_docker: true
+install_homebrew: true
 install_kubernetes: true
+install_neovim: true
 install_opentofu: true
+install_rust: true
 
 #python3
 ansible_python_interpreter: /usr/bin/python3

@@ -15,9 +15,10 @@ install_mullvad: true
 
 # Third party
 install_chrome: true
+install_homebrew: true
+install_rpmfusion: true
 install_vscode: true
 install_zoom: true
-install_rpmfusion: true
 
 #python3
 ansible_python_interpreter: /usr/bin/python3

@@ -111,12 +111,34 @@
     state: installed
 
 - name: Install Rust packages
+  community.general.cargo:
+    name:
+      - alacritty
+      - bat
+      - bottom
+      - cargo
+      - cargo-update
+      - delta
+      - editorconfig
+      - fd-find
+      - install
+      - lsd
+      - myfly
+      - rm-improved
+      - starship
+      - tree-sitter-cli
+      - zoxide
+
+- name: Install Rust packages with locked dependencies
+  community.general.cargo:
+    name:
+      - yazi-fm
+      - yazi-cli
+    locked: true
+
+- name: Install ripgrep with pcre2
   shell: |
-    [ -f ~/.cargo/env ] && source $HOME/.cargo/env
-    cargo install bottom lsd rm-improved fd-find bat zoxide cargo-update \
-      tree-sitter-cli editorconfig starship myfly alacritty delta
     cargo install ripgrep --features pcre2
-    cargo install --locked yazi-fm yazi-cli
 
 - name: Create ~/Dev if it does not exist
   ansible.builtin.file:
